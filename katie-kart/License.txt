@@ -1,0 +1,16 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Katie Kart for SuperTuxKart
+Upstream-Contact: CreamBR <gustavo.barreira92@gmail.com>
+Source: https://supertuxkart.net
+License: CC-BY 3.0
+
+Files: katie-kart.blend
+Copyright: Copyright 2022 ZAQraven (Original Konqi model); Copyright 2025 CreamBR (first modifications); Copyright Indro a.k.a Betharatux1 (Original Kart model, of Old Konqi)
+License: CC-BY 3.0 and GPL
+
+Files:
+ katie.svg
+Copyright: Copyright 3DMish
+License: GPL
+
+TODO: Finish this, adding the lines of texture .pngs

@@ -1,0 +1,135 @@
+buildscript
+    {
+    repositories
+    {
+        mavenCentral()
+        google()
+    }
+
+    dependencies
+    {
+        classpath 'com.android.tools.build:gradle:8.10.1'
+    }
+    }
+
+allprojects
+    {
+        repositories
+        {
+            mavenCentral()
+            google()
+        }
+    }
+
+apply plugin: 'com.android.application'
+
+android
+    {
+    namespace "org.supertuxkart.stk"
+    compileSdkVersion 33
+    ndkVersion "25.2.9519653"
+
+    externalNativeBuild
+    {
+        ndkBuild {
+            path 'Android.mk'
+        }
+    }
+
+    defaultConfig
+    {
+        minSdkVersion 24
+        targetSdkVersion 33
+        externalNativeBuild {
+            ndkBuild {
+                def app_platform = "APP_PLATFORM=android-${24}"
+                arguments app_platform, 'APP_STL=c++_static'
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            }
+        }
+        def runTasks = gradle.startParameter.taskNames
+        if ('bundleRelease' in runTasks) {
+            ndk.debugSymbolLevel 'FULL'
+        }
+    }
+	
+    signingConfigs
+    {
+        release
+        {
+            storeFile file(keystore)
+            storePassword storepass
+            keyAlias alias
+            keyPassword storepass
+        }
+    }
+	
+    buildTypes
+    {
+        debug
+        {
+            applicationIdSuffix "_dbg"
+            debuggable true
+            jniDebuggable true
+            minifyEnabled false
+            shrinkResources false
+            multiDexEnabled true
+            externalNativeBuild
+            {
+                ndkBuild
+                {
+                    arguments 'NDK_DEBUG=1'
+                    cFlags '-O0'
+                    cppFlags '-O0'
+                }
+            }
+            ndk
+            {
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            }
+        }
+
+        release
+        {
+            externalNativeBuild
+            {
+                ndkBuild
+                {
+                    cFlags '-O3'
+                    cppFlags '-O3'
+                }
+            }
+            ndk {
+
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            }
+        }
+
+        beta
+        {
+            applicationIdSuffix "_beta"
+            externalNativeBuild
+            {
+                ndkBuild
+                {
+                    cFlags '-O3'
+                    cppFlags '-O3'
+                }
+            }
+            ndk {
+
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+            }
+        }
+    }
+
+    sourceSets
+    {
+        main
+        {
+            manifest.srcFile 'AndroidManifest.xml'
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+    }
+}
